@@ -205,4 +205,10 @@ public class M3Colors extends AndroidNonvisibleComponent {
     }
   }
 
+  @SimpleFunction(description = "Is Dark Mode enabled?")
+  public boolean IsDarkMode() {
+    int nightModeFlags = context.getResources().getConfiguration().uiMode & android.content.res.Configuration.UI_MODE_NIGHT_MASK;
+    return nightModeFlags == android.content.res.Configuration.UI_MODE_NIGHT_YES;
+  }
+
 }
