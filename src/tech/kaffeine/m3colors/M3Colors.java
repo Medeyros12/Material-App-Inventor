@@ -1,20 +1,25 @@
 package tech.kaffeine.m3colors;
 
-import com.google.appinventor.components.annotations.SimpleFunction;
-import com.google.appinventor.components.runtime.AndroidNonvisibleComponent;
-import com.google.appinventor.components.runtime.ComponentContainer;
-import com.google.appinventor.components.runtime.errors.YailRuntimeError;
-import com.google.appinventor.components.runtime.util.YailList;
+import android.app.*;
+import android.content.*;
+import android.view.*;
+
+import com.google.appinventor.components.annotations.*;
+import com.google.appinventor.components.runtime.*;
 import android.os.Build;
-import android.content.Context;
 
 public class M3Colors extends AndroidNonvisibleComponent {
 
+  private ComponentContainer container;
   private Context context;
+  private Activity activity;
+
 
   public M3Colors(ComponentContainer container) {
     super(container.$form());
+    this.container = container;
     this.context = container.$context();
+    this.activity = container.$context();
   }
 
   @SimpleFunction(description = "Get Primary Color")
@@ -209,6 +214,28 @@ public class M3Colors extends AndroidNonvisibleComponent {
   public boolean IsDarkMode() {
     int nightModeFlags = context.getResources().getConfiguration().uiMode & android.content.res.Configuration.UI_MODE_NIGHT_MASK;
     return nightModeFlags == android.content.res.Configuration.UI_MODE_NIGHT_YES;
+  }
+
+  @SimpleFunction(description = "Set Color of System Bars (Status Bar and Navigation Bar)")
+  public void SetSystemBarsColor(int color) {
+    Window scrn = this.activity.getWindow();
+    if (Build.VERSION.SDK_INT >= 35) {
+      WindowInsets windowInsets = scrn.getDecorView().getRootWindowInsets();
+      scrn.getDecorView().setOnApplyWindowInsetsListener(new View.OnApplyWindowInsetsListener() {
+        @Override
+        public WindowInsets onApplyWindowInsets(View view, WindowInsets insets) {
+          int StatusHeight = windowInsets.getInsets(WindowInsets.Type.systemBars()).top;
+          view.setPadding(0, StatusHeight, 0, 0);
+          // int NavHeight = windowInsets.getInsets(WindowInsets.Type.systemBars()).bottom;
+          // view.setPadding(0, 0, 0, NavHeight);
+          view.setBackgroundColor(color);
+          return insets;
+        }
+      });
+    } else {
+      scrn.setStatusBarColor(color);
+      scrn.setNavigationBarColor(color);
+    }
   }
 
 }
