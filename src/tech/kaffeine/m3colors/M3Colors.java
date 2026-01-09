@@ -40,6 +40,18 @@ public class M3Colors extends AndroidNonvisibleComponent {
     return secondary200;
   }
 
+  @SimpleFunction(description = "Get Background Color")
+  public int GetBackgroundColor(boolean darkTheme) {
+    int background = context.getResources().getColor(darkTheme?android.R.m3_ref_palette_dynamic_neutral_variant98:android.R.m3_ref_palette_dynamic_neutral_variant6);
+    return background;
+  }
+
+  @SimpleFunction(description = "Get Surface Color")
+  public int GetBackgroundColor(boolean darkTheme) {
+    int background = context.getResources().getColor(darkTheme?android.R.m3_ref_palette_dynamic_neutral_variant98:android.R.m3_ref_palette_dynamic_neutral_variant6);
+    return background;
+  }
+
   @SimpleFunction(description = "Get Accent1 Color (Shade can be one of: 0, 10, 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000)")
   public int GetAccent1Color(int shade) {
     switch(shade) {
